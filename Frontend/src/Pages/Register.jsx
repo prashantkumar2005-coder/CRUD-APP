@@ -1,0 +1,47 @@
+import React, { useState } from 'react'
+
+export default function Register() {
+    const [register, setRegister] = useState({
+        name: "",
+        email: "",
+        password: ""
+    })
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+    }
+    const handleChange = (e) => {
+        const { name, value } = e.target
+        setRegister((prev) => ({
+            ...prev,
+            [name]: value,
+        }))
+    }
+
+    return (
+        <>
+            <div className="login-wrapper">
+                <div className="login-card">
+                    <p className="login-eyebrow">Create Account</p>
+                    <h1 className="login-title">Register in to your account</h1>
+                    <form onSubmit={handleSubmit}>
+                        <div className="field-group">
+                            <label className="field-label">Name </label>
+                            <input className="field-input" type="name" name="name" value={register.name} onChange={handleChange} placeholder="enter your name" required />
+                        </div>
+                        //
+                        <div className="field-group">
+                            <label className="field-label">Email Address</label>
+                            <input className="field-input" type="email" name="email" value={register.email} onChange={handleChange} placeholder="you@example.com" required />
+                        </div>
+                        <div className="field-group">
+                            <label className="field-label">Password</label>
+                            <input className="field-input" type="password" name="password" value={Register.password} onChange={handleChange} placeholder="••••••••" required />
+                        </div>
+                        <button className="submit-btn" type="submit">Register</button>
+                    </form>
+                </div>
+            </div>
+        </>
+    )
+}

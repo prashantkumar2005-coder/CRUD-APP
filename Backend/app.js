@@ -14,7 +14,7 @@ app.use(express.json());
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log(" MongoDB Connected"))
     .catch((err) => {
-        console.log("❌ MongoDB connection error:", err);
+        console.log("MongoDB connection error:", err);
     });
 
 // Routes
@@ -99,21 +99,21 @@ app.put("/library/:id", async (req, res) => {
 app.delete('/library/:id', async (req, res) => {
     const { id } = req.params;
     console.log(id);
-    
-  const result = await Book.findOneAndDelete(id);
-console.log(result);
-  if(result){
- return res.status(200).json({
+
+    const result = await Book.findOneAndDelete(id);
+    console.log(result);
+    if (result) {
+        return res.status(200).json({
             success: true,
             message: "deleted succesfully"
         })
-  }
-    
-        res.status(500).json({
-            success: false,
-            message: "invalid id"
-        })
-    
+    }
+
+    res.status(500).json({
+        success: false,
+        message: "invalid id"
+    })
+
 })
 
 app.listen(3000, () => {

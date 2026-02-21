@@ -68,12 +68,12 @@ export default function Library() {
         try {
             const res = await api.delete(`/library/${id}`);
             console.log(res);
-           if(res.data.success){
-            
-            alert("Succcesfully Deleted");
-            fetchBooks();
+            if (res.data.success) {
 
-           }
+                alert("Succcesfully Deleted");
+                fetchBooks();
+
+            }
 
         } catch (err) {
             console.log("Delete : something went wrong")
@@ -124,7 +124,7 @@ export default function Library() {
 
                     <div className="books-container">
                         {books.map((
-                            
+
                         ) => (
                             <div key={book._id} className="book-card">
                                 <h3>{book.title || "No Title"}</h3>
