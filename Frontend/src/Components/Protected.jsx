@@ -4,6 +4,7 @@ export const Protected = () => {
   return (
     <>
     this is secure page
+    
     </>
   )
 }

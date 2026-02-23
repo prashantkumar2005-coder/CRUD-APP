@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import api from '../../services/api';
 
 export default function Register() {
     const [register, setRegister] = useState({
@@ -7,9 +8,23 @@ export default function Register() {
         password: ""
     })
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
+
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+        try{
+         const response =  await api.post("/auth/register" , register);
+         
+         console.log(response);
+
+        }catch(err){
+           const {response } = err;
+
+   alert(response.data.message)
+        }
     }
+
+// make once user is register send alert and form fir sai khali ho jaye
+
     const handleChange = (e) => {
         const { name, value } = e.target
         setRegister((prev) => ({

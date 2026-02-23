@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Book = require("./model/model");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const userRoutes = require("./routes/userRoute");
 
 dotenv.config();
 
@@ -16,6 +17,11 @@ mongoose.connect(process.env.MONGO_URI)
     .catch((err) => {
         console.log("MongoDB connection error:", err);
     });
+
+
+app.use("/auth", userRoutes);
+
+
 
 // Routes
 app.get("/library", async (req, res) => {
@@ -38,6 +44,12 @@ app.post("/library", async (req, res) => {
     try {
         const { title, author, price } = req.body;
 
+        if (!title || !author || !price) {
+            return res.status(400).json({
+                success: false,
+                message: "please fill all details (title , author , price )"
+            })
+        }
         let newBook = new Book({
             title,
             author,
