@@ -5,7 +5,7 @@ import { Routes, Route } from 'react-router-dom'
 import { Navbar } from './Pages/Navbar'
 import Register from './Pages/Register'
 import { Protected } from './Components/Protected'
-import { Home } from './Pages/Home'
+import { Home } from './Pages/Store'
 
 
 
@@ -20,11 +20,11 @@ function App() {
         <Route path="/Register" element={<Register />} />
         {/* Protected Route */}
         <Route element={<Protected />}>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Store />} />
         </Route>
       </Routes>
 
-      {/* <Library /> */}
+      {/* //   <Library /> */}
     </>
   )
 }

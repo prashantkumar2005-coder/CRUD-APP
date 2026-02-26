@@ -8,22 +8,25 @@ export default function Register() {
         password: ""
     })
 
-
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        try{
-         const response =  await api.post("/auth/register" , register);
-         
-         console.log(response);
+        try {
+            const response = await api.post("/auth/register", register);
+              setRegister({
+                name: "",
+                email: "",
+                password: ""
+            });
+            alert(`Hello ,${register.name} Your Account Has been Created`)
+          
 
-        }catch(err){
-           const {response } = err;
-
-   alert(response.data.message)
+        } catch (err) {
+            const { response } = err;
+            alert(response.data.message)
         }
     }
 
-// make once user is register send alert and form fir sai khali ho jaye
+    // make once user is register send alert and form fir sai khali ho jaye
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -32,6 +35,7 @@ export default function Register() {
             [name]: value,
         }))
     }
+
 
     return (
         <>
@@ -51,7 +55,7 @@ export default function Register() {
                         </div>
                         <div className="field-group">
                             <label className="field-label">Password</label>
-                            <input className="field-input" type="password" name="password" value={Register.password} onChange={handleChange} placeholder="••••••••" required />
+                            <input className="field-input" type="password" name="password" value={register.password} onChange={handleChange} required />
                         </div>
                         <button className="submit-btn" type="submit">Register</button>
                     </form>
