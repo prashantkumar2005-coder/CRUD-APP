@@ -5,28 +5,31 @@ import { Routes, Route } from 'react-router-dom'
 import { Navbar } from './Pages/Navbar'
 import Register from './Pages/Register'
 import { Protected } from './Components/Protected'
-import { Home } from './Pages/Store'
+import  Store  from './Pages/Store'
+import { Home } from './Pages/Home'
 
 
 
 function App() {
 
   return (
-    <>
-      <Navbar />
+//     <>
+//       <Navbar />
 
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/Register" element={<Register />} />
-        {/* Protected Route */}
-        <Route element={<Protected />}>
-          <Route path="/" element={<Store />} />
-        </Route>
-      </Routes>
+//       <Routes>
+//         <Route path="/" element={<Home />} />
+//         <Route path="/login" element={<Login />} />
+//         <Route path="/Register" element={<Register />} />
+//         {/* Protected Route */}
+//         <Route element={<Protected />}>
+//           <Route path="/Store" element={<Store />} />
+//         </Route>
+//       </Routes>
 
-      {/* //   <Library /> */}
-    </>
-  )
-}
+//     </>
+  <>
+   <Library />
+</> )
+ }
 
 export default App

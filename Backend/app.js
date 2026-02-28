@@ -19,7 +19,7 @@ mongoose.connect(process.env.MONGO_URI)
         console.log("MongoDB connection error:", err);
     });
 
-app.use("/" ,libraryRoutes)
+app.use("/", libraryRoutes)
 app.use("/auth", userRoutes);
 
 

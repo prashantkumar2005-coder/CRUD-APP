@@ -4,7 +4,6 @@ import "./Library.css";
 import { useState } from 'react'
 import api from '../services/api'
 
-
 export default function Library() {
     const [books, setBooks] = useState([])
     const [edit, setEdit] = useState(null)
@@ -18,11 +17,14 @@ export default function Library() {
     }, [])
 
     const fetchBooks = async () => {
-        const res = await api.get("/library");
-        console.log(res.data.data);
-        setBooks(res.data.data);
-
-        console.log(books);
+        try {
+            const res = await api.get("/library");
+            console.log(res.data.data);
+            setBooks(res.data.data);
+            console.log(res.data.data);
+        } catch (err) {
+            console.log("Fetch Error ", err)
+        }
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -30,10 +32,10 @@ export default function Library() {
 
             if (edit) {
                 await api.put(`/library/${edit}`, formData);
+                setEdit(null) // ✅ add this
             } else {
-                const result = await api.post("/library", formData);
+                await api.post("/library", formData);
             }
-
             await fetchBooks();
         } catch (err) {
             console.log("creation error", err);
@@ -44,8 +46,6 @@ export default function Library() {
             author: "",
             price: ""
         })
-
-
     }
 
     const handleChange = (e) => {
@@ -123,15 +123,13 @@ export default function Library() {
                     <h2 className="books-heading">Books</h2>
 
                     <div className="books-container">
-                        {books.map((
-
-                        ) => (
+                        {books.map((book) => (
                             <div key={book._id} className="book-card">
                                 <h3>{book.title || "No Title"}</h3>
                                 <p><strong>Author:</strong> {book.author}</p>
                                 <p><strong>Price:</strong> ₹ {book.price}</p>
                                 <button onClick={() => handleEdit(book)}>Edit</button>
-                                <button on onClick={() => handleDelete(book._id)}>Delete</button>
+                                <button onClick={() => handleDelete(book._id)}>Delete</button>
                             </div>
                         ))}
                     </div>

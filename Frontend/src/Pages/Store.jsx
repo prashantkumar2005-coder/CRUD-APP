@@ -1,32 +1,30 @@
-import React, { useEffect, useEffectEvent, useState } from 'react'
-import api from '../../services/api'
+import React, { useEffect, useState } from 'react'
+import api from '../../services/api';
 
-export const Store = () => {
-    const [store, setStore] = useState([])
+export default function Store() {
+    const [store, setStore] = useState([]);
+
     useEffect(() => {
-        fetchData()
+        fetchStore()
     }, [])
-    const fetchData = async () => {
+
+    const fetchStore = async () => {
         try {
-            const response = await api.get("/library")
-            console.log(response.data.data);
+            const response = await api.get("/store");
+            console.log(response);
             setStore(response.data.data)
         } catch (err) {
-            console.log('home error', err)
+            console.log("Store error:", err)
         }
     }
 
     return (
-        <>
-            {store &&
-                store.map((book) => (
-                    <div key={book._id}>
-                        <h2>{book.title}</h2>
-                        <h2>{book.author}</h2>
-                        <h2>{book.price}</h2>
-                    </div>
-                ))
-            }
-        </>
+        <div>
+            {store.map((book) => (
+                <div key={book._id}>
+                    <h2>{book.author}</h2>
+                </div>
+            ))}
+        </div>
     )
 }

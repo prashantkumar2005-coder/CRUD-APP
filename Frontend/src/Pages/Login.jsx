@@ -5,30 +5,29 @@ export const Login = () => {
         email: "",
         password: ""
     })
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         // page ko rerender nahi krta
         try {
-            const response =  await api.post("/auth/login", login);
-             console.log(response);
+            const response = await api.post("/auth/login", login);
+            console.log(response);
 
-            if(response.data.success){
-            setLogin({
-                email: "",
-                password: ""
-            })
-            localStorage.setItem("token" , response.data.token)
-            alert(`welcome ${login.email}`)
-            }else{
+            if (response.data.success) {
+                setLogin({
+                    email: "",
+                    password: ""
+                })
+                localStorage.setItem("token", response.data.token)
+                alert(`welcome ${login.email}`)
+            } else {
                 alert(response.data.message)
             }
-           
-        } catch (err) {
-                        const { response } = err;
 
-            console.log("login err : " , response);
+        } catch (err) {
+            const { response } = err;
+            console.log("login err : ", response);
             alert(response.data.message || "Something Wrong")
-           
+
         }
 
     }

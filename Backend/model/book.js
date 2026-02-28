@@ -1,9 +1,13 @@
 const mongoose = require('mongoose');
-
-const SchemaBooks = new mongoose.Schema({
-    title : String,
-    author : String,
-    price : Number
+const { Schema } = mongoose;
+const SchemaBooks = new Schema({
+    title: String,
+    desc: String,
+    price: Number,
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+    }
 })
 
 const Book = mongoose.model("Book", SchemaBooks);

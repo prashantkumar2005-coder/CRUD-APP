@@ -1,11 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const Book = require("../model/book.js")
-
+const authVerify = require('../auth/authVerify.js')
+const User = require('../model/user.js')
 // Routes
+
+// router.use("/verify", authVerify);
+
 router.get("/library", async (req, res) => {
     try {
-        console.log("helo")
         const book = await Book.find();
         res.status(200).json({
             success: true,
@@ -18,6 +21,28 @@ router.get("/library", async (req, res) => {
         });
     }
 });
+
+router.get('/store', authVerify, async (req, res) => {
+    try {
+        const user = req.user;
+        const { email } = user;
+
+        const userDetails = await User.findOne({ email: email })
+        console.log(userDetails);
+
+        return res.status(200).json({
+            success: true,
+            data: userDetails,
+        })
+
+    } catch (err) {
+        console.log("store route err", err)
+        return res.status(500).json({
+            success: false,
+            message: "Internal sever error" || err.name,
+        })
+    }
+})
 
 // Create Route
 router.post("/library", async (req, res) => {
@@ -46,7 +71,7 @@ router.post("/library", async (req, res) => {
         });
 
     } catch (err) {
-        console.log("creation error(post)", err);
+        console.log("creation error - 111", err.message);
         return res.status(500).json({
             success: false,
             message: "Server not working",
