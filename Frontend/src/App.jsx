@@ -8,7 +8,7 @@ import Register from './Pages/Register'
 import { Protected } from './Components/Protected'
 import Store from './Pages/Store'
 import { Home } from './Pages/Home'
-import Library from './Library'
+import Library from './Components/Library'
 
 
 
@@ -26,7 +26,7 @@ export default function App() {
       </Routes>
 
       <>
-        <Library />
+        {/* <Library /> */}
       </>
     </>
   )

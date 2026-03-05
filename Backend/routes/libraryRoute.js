@@ -27,25 +27,107 @@ router.get("/library", async (req, res) => {
 router.get('/store', authVerify, async (req, res) => {
     try {
         const user = req.user;
-        const { email } = user;
 
-        const userDetails = await User.findOne({ email: email })
+        // ✏️ EDITED: pehle sirf userDetails return ho raha tha
+        // Ab user ki apni books fetch ho rahi hain createdBy se filter karke
+        const books = await Book.find({ createdBy: user._id });
 
         return res.status(200).json({
             success: true,
-            data: userDetails,
+            data: books, // ✏️ EDITED: userDetails ki jagah books return ho rahi hain
         });
 
     } catch (err) {
         console.log("store route err", err);
         return res.status(500).json({
             success: false,
-            message: err.message || "Internal server error", // ✏️ EDITED: flipped the order so err.message is used first
+            message: err.message || "Internal server error",
         });
     }
-// ✏️ EDITED: removed the stray "1" that was here — it was a syntax error
 });
 
+
+// ── POST /store ───────────────────────────────────────────────────────────────
+// Logged-in user apni nayi book banaye, createdBy automatically set hoga
+router.post('/store', authVerify, async (req, res) => {
+    try {
+        const { title, author, price } = req.body;
+
+        if (!title || !author || !price) {
+            return res.status(400).json({
+                success: false,
+                message: "Please fill all details (title, author, price)"
+            });
+        }
+
+        const newBook = new Book({
+            title,
+            author,
+            price,
+            createdBy: req.user._id  // logged-in user ki id automatically save hogi
+        });
+
+        await newBook.save();
+
+        res.status(200).json({
+            success: true,
+            message: "Book Created Successfully",
+            data: newBook,
+        });
+
+    } catch (err) {
+        console.log("store create error", err.message);
+        res.status(500).json({ success: false, message: "Create failed" });
+    }
+});
+
+// ── PUT /store/:id ────────────────────────────────────────────────────────────
+// Store se sirf apni book update karo (createdBy check hoga)
+router.put('/store/:id', authVerify, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { title, author, price } = req.body;
+
+        // ✏️ createdBy: req.user._id — dono check ho rahe hain, koi aur ki book edit nahi kar sakta
+        const updatedBook = await Book.findOneAndUpdate(
+            { _id: id, createdBy: req.user._id },
+            { title, author, price },
+            { new: true }
+        );
+
+        if (!updatedBook) {
+            return res.status(404).json({ success: false, message: "Book not found or not authorized" });
+        }
+
+        res.status(200).json({ success: true, message: "Book Updated", data: updatedBook });
+
+    } catch (err) {
+        console.log("store update error", err.message);
+        res.status(500).json({ success: false, message: "Update failed" });
+    }
+});
+
+
+// ── DELETE /store/:id ─────────────────────────────────────────────────────────
+// Store se sirf apni book delete karo (createdBy check hoga)
+router.delete('/store/:id', authVerify, async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // ✏️ createdBy: req.user._id — sirf owner hi delete kar sakta hai
+        const result = await Book.findOneAndDelete({ _id: id, createdBy: req.user._id });
+
+        if (!result) {
+            return res.status(404).json({ success: false, message: "Book not found or not authorized" });
+        }
+
+        res.status(200).json({ success: true, message: "Book deleted successfully" });
+
+    } catch (err) {
+        console.log("store delete error", err.message);
+        res.status(500).json({ success: false, message: "Delete failed" });
+    }
+});
 
 // ── POST /library ─────────────────────────────────────────────────────────────
 // ✏️ EDITED: added authVerify — only logged in users can create books
