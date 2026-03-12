@@ -3,7 +3,7 @@ const router = express.Router();
 const Book = require("../model/book.js");
 const authVerify = require('../auth/authVerify.js');
 const User = require('../model/user.js');
-const { getLibrary , postLibrary , putLibrary , deleteLibrary} = require("../controllers/library.js");
+const { getLibrary , postLibrary , putLibrary , deleteLibrary} = require("../controllers/library.controller.js");
 const { getStore , postStore , putStore , deleteStore} = require("../controllers/protectedStore.js");
 
 
